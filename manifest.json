@@ -1,0 +1,16 @@
+{
+  "name": "Snake Game by MUSA",
+  "short_name": "Snake by MUSA",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050816",
+  "theme_color": "#00e5ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "snake.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
