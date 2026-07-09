@@ -249,9 +249,9 @@ function createFood(){
 
     return {
 
-        x:Math.floor(Math.random()*20)*box,
+        x: Math.floor(Math.random()*20)*box,
 
-        y:Math.floor(Math.random()*20)*box
+        y: Math.floor(Math.random()*20)*box
 
     };
 
@@ -282,11 +282,6 @@ document.addEventListener("keydown",function(e){
 
 
 });
-
-
-
-
-
 
 
 
@@ -378,7 +373,7 @@ function draw(){
 
 
     // Eat Food
-
+    // খাবার এবং সাপের মাথা একই গ্রিড সেলে আছে কিনা তা চেক করুন
     if(
         head.x==food.x &&
         head.y==food.y
