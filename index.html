@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Snake Game by MUSA | Online snake game</title>
+<link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#00e5ff">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+
+<body>
+
+
+<div id="menu">
+
+<h1>🐍 Snake Game by MUSA</h1>
+
+<h2>
+🏆 High Score:
+<span id="menuHighScore">0</span>
+</h2>
+<h2>
+🪙 Coins:
+<span id="coins">0</span>
+</h2>
+
+
+<h3>🛒 Skin Shop</h3>
+
+<button onclick="buySkin('#ff0055',50)">
+🔴 Red Skin (50🪙)
+</button>
+
+<button onclick="buySkin('#00ff99',100)">
+🟢 Matrix Skin (100🪙)
+</button>
+
+<button onclick="buySkin('#ff9900',150)">
+🟠 Fire Skin (150🪙)
+</button>
+
+<h3>🎨 Choose Snake Skin</h3>
+
+<button onclick="changeSkin('#00e5ff')">
+🔵 Neon
+</button>
+
+<button onclick="changeSkin('#22c55e')">
+🟢 Green
+</button>
+
+<button onclick="changeSkin('#a855f7')">
+🟣 Purple
+</button>
+
+<button onclick="changeSkin('#facc15')">
+🟡 Gold
+</button>
+
+
+<br>
+
+<button onclick="startGame()">
+🎮 Start Game
+</button>
+
+
+<div class="info">
+
+<p>🎯 Eat food and grow</p>
+
+<p>⬆️⬇️⬅️➡️ Arrow Keys</p>
+
+<p>📱 Swipe to move</p>
+
+</div>
+
+</div>
+
+
+
+
+<div id="gameBox" style="display:none;">
+
+
+<h1>🐍 Snake Game</h1>
+
+
+<canvas id="game"
+width="400"
+height="400">
+</canvas>
+
+
+<h2>
+Score:
+<span id="score">0</span>
+</h2>
+
+
+<h2>
+🏆 High Score:
+<span id="highScore">0</span>
+</h2>
+
+
+<button onclick="restart()">
+🔄 Restart
+</button>
+
+
+<button onclick="showMenu()">
+🏠 Menu
+</button>
+
+
+</div>
+
+
+
+<script>
+    let coins =
+Number(localStorage.getItem("snakeCoins")) || 0;
+
+
+let unlockedSkins =
+JSON.parse(localStorage.getItem("unlockedSkins"))
+||
+[
+"#00e5ff",
+"#22c55e",
+"#a855f7",
+"#facc15"
+];
+
+
+
+function updateCoins(){
+
+document.getElementById("coins").innerHTML=coins;
+
+}
+
+
+updateCoins();
+    const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let box = 20;
+
+let snake = [];
+let food;
+
+let direction = "RIGHT";
+
+let score = 0;
+let speed = 120;
+let game;
+
+
+// Snake Skin
+let snakeSkin =
+localStorage.getItem("snakeSkin") || "#00e5ff";
+
+
+// High Score
+let highScore =
+localStorage.getItem("snakeHighScore") || 0;
+
+
+if(document.getElementById("highScore")){
+    document.getElementById("highScore").innerHTML = highScore;
+}
+
+if(document.getElementById("menuHighScore")){
+    document.getElementById("menuHighScore").innerHTML = highScore;
+}
+
+
+
+// Start Game
+
+function startGame(){
+
+    document.getElementById("menu").style.display="none";
+
+    document.getElementById("gameBox").style.display="block";
+
+
+    snake=[
+        {
+            x:200,
+            y:200
+        }
+    ];
+
+
+    food=createFood();
+
+
+    direction="RIGHT";
+
+    score=0;
+
+    speed=120;
+
+
+    document.getElementById("score").innerHTML=0;
+
+
+    clearInterval(game);
+
+    game=setInterval(draw,speed);
+
+}
+
+
+
+
+// Create Food
+
+function createFood(){
+
+    return {
+
+        x:Math.floor(Math.random()*20)*box,
+
+        y:Math.floor(Math.random()*20)*box
+
+    };
+
+}
+
+
+
+
+// Keyboard Control
+
+document.addEventListener("keydown",function(e){
+
+
+    if(e.key=="ArrowUp" && direction!="DOWN")
+        direction="UP";
+
+
+    if(e.key=="ArrowDown" && direction!="UP")
+        direction="DOWN";
+
+
+    if(e.key=="ArrowLeft" && direction!="RIGHT")
+        direction="LEFT";
+
+
+    if(e.key=="ArrowRight" && direction!="LEFT")
+        direction="RIGHT";
+
+
+});
+
+
+
+
+
+
+// Game Draw Function
+
+function draw(){
+
+
+    ctx.fillStyle="#020617";
+
+    ctx.fillRect(
+        0,
+        0,
+        400,
+        400
+    );
+
+
+
+    // Draw Snake
+
+    snake.forEach((part,index)=>{
+
+
+        ctx.fillStyle =
+        index==0
+        ?
+        snakeSkin
+        :
+        shadeColor(snakeSkin,-30);
+
+
+
+        ctx.fillRect(
+            part.x,
+            part.y,
+            box,
+            box
+        );
+
+
+    });
+
+
+
+
+
+    // Draw Food
+
+    ctx.fillStyle="red";
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        food.x+10,
+        food.y+10,
+        10,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+
+
+
+    let head={...snake[0]};
+
+
+
+    if(direction=="UP")
+        head.y-=box;
+
+
+    if(direction=="DOWN")
+        head.y+=box;
+
+
+    if(direction=="LEFT")
+        head.x-=box;
+
+
+    if(direction=="RIGHT")
+        head.x+=box;
+
+
+
+
+
+
+    // Eat Food
+
+    if(
+        head.x==food.x &&
+        head.y==food.y
+    ){
+
+
+        score++;
+coins += 5;
+
+
+localStorage.setItem(
+"snakeCoins",
+coins
+);
+
+
+updateCoins();
+
+        document.getElementById("score").innerHTML=score;
+
+
+
+        // Sound
+
+        let sound=new Audio(
+        "https://actions.google.com/sounds/v1/cartoon/pop.ogg"
+        );
+
+        sound.play();
+
+
+
+
+        food=createFood();
+
+
+
+        // Increase Speed
+
+        if(score%5==0){
+
+            clearInterval(game);
+
+            speed-=10;
+
+            game=setInterval(draw,speed);
+
+        }
+
+
+    }
+
+    else{
+
+        snake.pop();
+
+    }
+
+
+
+
+
+
+
+    // Collision
+
+    if(
+
+        head.x<0 ||
+
+        head.y<0 ||
+
+        head.x>=400 ||
+
+        head.y>=400 ||
+
+        collision(head)
+
+    ){
+
+        gameOver();
+
+        return;
+
+    }
+
+
+
+
+    snake.unshift(head);
+
+
+}
+
+
+
+
+
+
+// Collision Check
+
+function collision(head){
+
+    return snake.some(part=>
+
+        part.x==head.x &&
+        part.y==head.y
+
+    );
+
+}
+
+
+
+
+
+
+
+
+// Game Over
+
+function gameOver(){
+
+
+    clearInterval(game);
+
+
+
+    if(score>highScore){
+
+
+        highScore=score;
+
+
+        localStorage.setItem(
+            "snakeHighScore",
+            highScore
+        );
+
+
+    }
+
+
+
+    alert(
+        "🐍 Game Over!\nScore: "+score
+    );
+
+
+    showMenu();
+
+
+}
+
+
+
+
+
+
+
+// Restart
+
+function restart(){
+
+    startGame();
+
+}
+
+
+
+
+
+
+
+// Show Menu
+
+function showMenu(){
+
+
+    clearInterval(game);
+
+
+    document.getElementById("gameBox").style.display="none";
+
+
+    document.getElementById("menu").style.display="block";
+
+
+
+    document.getElementById("menuHighScore").innerHTML=
+
+    localStorage.getItem("snakeHighScore") || 0;
+
+
+}
+
+
+
+
+
+
+
+// Change Snake Skin
+
+function changeSkin(color){
+
+if(!unlockedSkins.includes(color)){
+
+alert("🔒 Skin Locked");
+
+return;
+
+}
+
+
+snakeSkin=color;
+
+
+localStorage.setItem(
+"snakeSkin",
+color
+);
+
+
+}
+
+
+
+
+
+
+
+// Dark Body Color
+
+function shadeColor(color,percent){
+
+
+    let num=parseInt(
+        color.replace("#",""),
+        16
+    );
+
+
+    let amt=Math.round(2.55*percent);
+
+
+    let R=(num>>16)+amt;
+
+    let G=(num>>8&255)+amt;
+
+    let B=(num&255)+amt;
+
+
+
+    return "#"+
+    (
+        0x1000000+
+        (R<255?R<0?0:R:255)*0x10000+
+        (G<255?G<0?0:G:255)*0x100+
+        (B<255?B<0?0:B:255)
+
+    )
+    .toString(16)
+    .slice(1);
+
+}
+
+
+
+
+
+
+
+
+// 📱 Mobile Swipe Control
+
+
+let startX=0;
+let startY=0;
+
+
+
+canvas.addEventListener(
+"touchstart",
+function(e){
+
+
+    startX=e.touches[0].clientX;
+
+    startY=e.touches[0].clientY;
+
+
+});
+
+
+
+
+canvas.addEventListener(
+"touchend",
+function(e){
+
+
+    let endX=e.changedTouches[0].clientX;
+
+    let endY=e.changedTouches[0].clientY;
+
+
+
+    let moveX=endX-startX;
+
+    let moveY=endY-startY;
+
+
+
+
+    if(Math.abs(moveX)>Math.abs(moveY)){
+
+
+        if(moveX>0 && direction!="LEFT")
+            direction="RIGHT";
+
+
+        else if(moveX<0 && direction!="RIGHT")
+            direction="LEFT";
+
+
+    }
+
+
+    else{
+
+
+        if(moveY>0 && direction!="UP")
+            direction="DOWN";
+
+
+        else if(moveY<0 && direction!="DOWN")
+            direction="UP";
+
+
+    }
+
+
+});
+function buySkin(color,price){
+
+
+if(unlockedSkins.includes(color)){
+
+
+alert("✅ Skin Already Unlocked");
+
+
+changeSkin(color);
+
+return;
+
+}
+
+
+
+
+if(coins>=price){
+
+
+coins-=price;
+
+
+unlockedSkins.push(color);
+
+
+
+localStorage.setItem(
+"snakeCoins",
+coins
+);
+
+
+
+localStorage.setItem(
+"unlockedSkins",
+JSON.stringify(unlockedSkins)
+);
+
+
+
+alert("🎉 Skin Unlocked!");
+
+
+
+changeSkin(color);
+
+
+
+updateCoins();
+
+
+}
+
+
+else{
+
+
+alert(
+"❌ Not Enough Coins"
+);
+
+
+}
+
+
+}
+</script>
+
+
+</body>
+  </html>
