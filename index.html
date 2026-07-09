@@ -10,6 +10,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="snake-192.png">
 </head>
 
 <body>
@@ -68,6 +69,8 @@
 🎮 Start Game
 </button>
 
+
+<button id="installBtn" style="display:none;">Install App</button>
 
 <div class="info">
 
@@ -182,6 +185,7 @@ if(document.getElementById("menuHighScore")){
 
 
 
+
 // Start Game
 
 function startGame(){
@@ -230,7 +234,7 @@ function createFood(){
         x:Math.floor(Math.random()*20)*box,
 
         y:Math.floor(Math.random()*20)*box
-
+n
     };
 
 }
@@ -282,6 +286,7 @@ function draw(){
 
 
 
+
     // Draw Snake
 
     snake.forEach((part,index)=>{
@@ -310,6 +315,7 @@ function draw(){
 
 
 
+
     // Draw Food
 
     ctx.fillStyle="red";
@@ -326,6 +332,7 @@ function draw(){
     );
 
     ctx.fill();
+
 
 
 
@@ -349,6 +356,7 @@ function draw(){
 
     if(direction=="RIGHT")
         head.x+=box;
+
 
 
 
@@ -421,6 +429,7 @@ updateCoins();
 
 
 
+
     // Collision
 
     if(
@@ -456,6 +465,8 @@ updateCoins();
 
 
 
+
+
 // Collision Check
 
 function collision(head){
@@ -468,6 +479,7 @@ function collision(head){
     );
 
 }
+
 
 
 
@@ -517,6 +529,8 @@ function gameOver(){
 
 
 
+
+
 // Restart
 
 function restart(){
@@ -524,6 +538,8 @@ function restart(){
     startGame();
 
 }
+
+
 
 
 
@@ -559,6 +575,8 @@ function showMenu(){
 
 
 
+
+
 // Change Snake Skin
 
 function changeSkin(color){
@@ -582,6 +600,8 @@ color
 
 
 }
+
+
 
 
 
@@ -623,6 +643,7 @@ function shadeColor(color,percent){
     .slice(1);
 
 }
+
 
 
 
@@ -729,10 +750,12 @@ unlockedSkins.push(color);
 
 
 
+
 localStorage.setItem(
 "snakeCoins",
 coins
 );
+
 
 
 
@@ -771,6 +794,41 @@ alert(
 }
 </script>
 
+
+
+<script>
+// Service worker registration
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(reg => console.log('Service Worker registered', reg))
+    .catch(err => console.warn('SW registration failed', err));
+}
+
+// beforeinstallprompt handling (show custom install button)
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) installBtn.style.display = 'inline-block';
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    installBtn.style.display = 'none';
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('User choice: ', outcome);
+    deferredPrompt = null;
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  console.log('PWA installed');
+});
+</script>
 
 </body>
   </html>
