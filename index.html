@@ -2,14 +2,17 @@
 <html>
 <head>
 <title>Snake Game by MUSA | Online snake game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
 
 <meta name="theme-color" content="#00e5ff">
 
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="snake-192.png">
 </head>
 
@@ -186,6 +189,20 @@ if(document.getElementById("menuHighScore")){
 
 
 
+// Set Canvas Size Responsive
+function setCanvasSize() {
+    let gameBox = document.getElementById("gameBox");
+    if (gameBox.style.display !== "none") {
+        let size = Math.min(window.innerWidth - 40, window.innerHeight - 300, 500);
+        canvas.width = size;
+        canvas.height = size;
+        box = size / 20;
+    }
+}
+
+window.addEventListener('resize', setCanvasSize);
+
+
 // Start Game
 
 function startGame(){
@@ -194,11 +211,12 @@ function startGame(){
 
     document.getElementById("gameBox").style.display="block";
 
+    setCanvasSize();
 
     snake=[
         {
-            x:200,
-            y:200
+            x: box * 10,
+            y: box * 10
         }
     ];
 
@@ -234,7 +252,7 @@ function createFood(){
         x:Math.floor(Math.random()*20)*box,
 
         y:Math.floor(Math.random()*20)*box
-n
+
     };
 
 }
@@ -270,6 +288,9 @@ document.addEventListener("keydown",function(e){
 
 
 
+
+
+
 // Game Draw Function
 
 function draw(){
@@ -280,8 +301,8 @@ function draw(){
     ctx.fillRect(
         0,
         0,
-        400,
-        400
+        canvas.width,
+        canvas.height
     );
 
 
@@ -314,8 +335,6 @@ function draw(){
 
 
 
-
-
     // Draw Food
 
     ctx.fillStyle="red";
@@ -324,16 +343,14 @@ function draw(){
     ctx.beginPath();
 
     ctx.arc(
-        food.x+10,
-        food.y+10,
-        10,
+        food.x+box/2,
+        food.y+box/2,
+        box/2,
         0,
         Math.PI*2
     );
 
     ctx.fill();
-
-
 
 
 
@@ -356,9 +373,6 @@ function draw(){
 
     if(direction=="RIGHT")
         head.x+=box;
-
-
-
 
 
 
@@ -426,10 +440,6 @@ updateCoins();
 
 
 
-
-
-
-
     // Collision
 
     if(
@@ -438,9 +448,9 @@ updateCoins();
 
         head.y<0 ||
 
-        head.x>=400 ||
+        head.x>=canvas.width ||
 
-        head.y>=400 ||
+        head.y>=canvas.height ||
 
         collision(head)
 
@@ -454,15 +464,10 @@ updateCoins();
 
 
 
-
     snake.unshift(head);
 
 
 }
-
-
-
-
 
 
 
@@ -479,11 +484,6 @@ function collision(head){
     );
 
 }
-
-
-
-
-
 
 
 
@@ -526,11 +526,6 @@ function gameOver(){
 
 
 
-
-
-
-
-
 // Restart
 
 function restart(){
@@ -538,11 +533,6 @@ function restart(){
     startGame();
 
 }
-
-
-
-
-
 
 
 
@@ -572,11 +562,6 @@ function showMenu(){
 
 
 
-
-
-
-
-
 // Change Snake Skin
 
 function changeSkin(color){
@@ -600,11 +585,6 @@ color
 
 
 }
-
-
-
-
-
 
 
 
@@ -643,11 +623,6 @@ function shadeColor(color,percent){
     .slice(1);
 
 }
-
-
-
-
-
 
 
 
@@ -831,4 +806,4 @@ window.addEventListener('appinstalled', () => {
 </script>
 
 </body>
-  </html>
+</html>
