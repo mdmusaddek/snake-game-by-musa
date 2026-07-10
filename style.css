@@ -1,34 +1,22 @@
-body{
-
-margin:0;
-
-height:100vh;
-
-width:100%;
-
-padding:0;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:
-linear-gradient(
-135deg,
-#050816,
-#111827
-);
-
-color:white;
-
-font-family:Arial;
-
-text-align:center;
-
-overflow-x: hidden;
-
+body {
+    margin: 0;
+    /* 100vh এর বদলে min-height ব্যবহার করুন */
+    min-height: 100vh; 
+    
+    /* flexbox-কে মোবাইল ফ্রেন্ডলি করতে column ডিরেকশন দিন */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    background: linear-gradient(135deg, #050816, #111827);
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    
+    /* মোবাইলে স্ক্রিনের দুপাশে যেন কিছুটা খালি জায়গা থাকে */
+    padding: 20px; 
+    box-sizing: border-box; 
 }
 
 
@@ -115,25 +103,20 @@ transform:scale(1.1);
 button:active{
   transform: scale(0.95);
 }
-
-
-canvas{
-
-background:#020617;
-
-border:3px solid #00e5ff;
-
-border-radius:15px;
-
-width: 100%;
-    max-width: 100vw;
-    height: auto;
-
-display: block;
-
-margin: 20px auto;
-
+canvas {
+    background: #020617;
+    border: 3px solid #00e5ff;
+    border-radius: 15px;
+    touch-action: none;
+    
+    /* নতুন যুক্ত করা কোড */
+    width: 100%;           /* মোবাইলের স্ক্রিনের চওড়া অনুযায়ী ১০০% হয়ে যাবে */
+    max-width: 400px;      /* বড় স্ক্রিনে বা ডেস্কটপে যেন ৪০০ পিক্সেলের চেয়ে বড় না হয় */
+    height: auto;          /* উইডথ অনুযায়ী হাইট যেন অটোমেটিক সেট হয় */
+    aspect-ratio: 1 / 1;   /* ৪০০×৪০০ মানে ১:১ রেশিও, যা গেমটিকে সবসময় চারকোনা রাখবে */
+    box-sizing: border-box; /* বর্ডার যেন ক্যানভাসের সাইজকে নষ্ট না করে */
 }
+
 
 
 
