@@ -1,8 +1,8 @@
 {
   "name": "Snake Game by MUSA",
   "short_name": "Snake by MUSA",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "./snake-game-by-musa",
+  "scope": "./snake-game-by-musa",
   "display": "standalone",
   "background_color": "#050816",
   "theme_color": "#00e5ff",
