@@ -1,53 +1,27 @@
-const cacheName="snake-musa-v1";
+const cacheName = "snake-game-by-musa-v1";
 
-
-const files=[
-"index.html",
-"style.css",
-"script.js",
-"manifest.json",
-"snake.png"
+const filesToCache = [
+    "index.html",
+    "style.css",
+    "manifest.json",
+    "snake.png"
 ];
 
-
-
-self.addEventListener(
-"install",
-event=>{
-
-event.waitUntil(
-
-caches.open(cacheName)
-.then(cache=>{
-
-return cache.addAll(files);
-
-})
-
-);
-
+self.addEventListener("install", event => {
+    event.waitUntil(
+        caches.open(cacheName)
+        .then(cache => {
+            return cache.addAll(filesToCache);
+        })
+    );
 });
 
 
-
-
-
-self.addEventListener(
-"fetch",
-event=>{
-
-
-event.respondWith(
-
-caches.match(event.request)
-
-.then(response=>{
-
-return response || fetch(event.request);
-
-})
-
-);
-
-
+self.addEventListener("fetch", event => {
+    event.respondWith(
+        caches.match(event.request)
+        .then(response => {
+            return response || fetch(event.request);
+        })
+    );
 });
