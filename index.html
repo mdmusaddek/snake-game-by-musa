@@ -1,19 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Snake Game by MUSA | Online snake game</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Snake Game by MUSA</title>
 <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-
-<meta name="theme-color" content="#00e5ff">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="snake-192.png">
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -22,7 +12,7 @@
 <div id="menu">
 
 <h1>🐍 Snake Game by MUSA</h1>
-<a href="https://mdmusaddek.github.io/md.musaddek/">More about the game creator</a>
+
 <h2>
 🏆 High Score:
 <span id="menuHighScore">0</span>
@@ -73,8 +63,6 @@
 </button>
 
 
-<button id="installBtn" style="display:none;">Install App</button>
-
 <div class="info">
 
 <p>🎯 Eat food and grow</p>
@@ -93,7 +81,7 @@
 <div id="gameBox" style="display:none;">
 
 
-<h1>🐍 Snake Game</h1>
+<h1>🐍 Snake Game by MUSA</h1>
 
 
 <canvas id="game"
@@ -188,21 +176,6 @@ if(document.getElementById("menuHighScore")){
 
 
 
-
-// Set Canvas Size Responsive
-function setCanvasSize() {
-    let gameBox = document.getElementById("gameBox");
-    if (gameBox.style.display !== "none") {
-        let size = Math.min(window.innerWidth - 40, window.innerHeight - 300, 500);
-        canvas.width = size;
-        canvas.height = size;
-        box = size / 20;
-    }
-}
-
-window.addEventListener('resize', setCanvasSize);
-
-
 // Start Game
 
 function startGame(){
@@ -211,12 +184,11 @@ function startGame(){
 
     document.getElementById("gameBox").style.display="block";
 
-    setCanvasSize();
 
     snake=[
         {
-            x: box * 10,
-            y: box * 10
+            x:200,
+            y:200
         }
     ];
 
@@ -249,9 +221,9 @@ function createFood(){
 
     return {
 
-        x: Math.floor(Math.random()*20)*box,
+        x:Math.floor(Math.random()*20)*box,
 
-        y: Math.floor(Math.random()*20)*box
+        y:Math.floor(Math.random()*20)*box
 
     };
 
@@ -286,6 +258,8 @@ document.addEventListener("keydown",function(e){
 
 
 
+
+
 // Game Draw Function
 
 function draw(){
@@ -296,10 +270,9 @@ function draw(){
     ctx.fillRect(
         0,
         0,
-        canvas.width,
-        canvas.height
+        400,
+        400
     );
-
 
 
 
@@ -330,6 +303,7 @@ function draw(){
 
 
 
+
     // Draw Food
 
     ctx.fillStyle="red";
@@ -338,14 +312,15 @@ function draw(){
     ctx.beginPath();
 
     ctx.arc(
-        food.x+box/2,
-        food.y+box/2,
-        box/2,
+        food.x+10,
+        food.y+10,
+        10,
         0,
         Math.PI*2
     );
 
     ctx.fill();
+
 
 
 
@@ -372,8 +347,10 @@ function draw(){
 
 
 
+
+
     // Eat Food
-    // খাবার এবং সাপের মাথা একই গ্রিড সেলে আছে কিনা তা চেক করুন
+
     if(
         head.x==food.x &&
         head.y==food.y
@@ -435,6 +412,9 @@ updateCoins();
 
 
 
+
+
+
     // Collision
 
     if(
@@ -443,9 +423,9 @@ updateCoins();
 
         head.y<0 ||
 
-        head.x>=canvas.width ||
+        head.x>=400 ||
 
-        head.y>=canvas.height ||
+        head.y>=400 ||
 
         collision(head)
 
@@ -459,10 +439,13 @@ updateCoins();
 
 
 
+
     snake.unshift(head);
 
 
 }
+
+
 
 
 
@@ -479,6 +462,10 @@ function collision(head){
     );
 
 }
+
+
+
+
 
 
 
@@ -521,6 +508,9 @@ function gameOver(){
 
 
 
+
+
+
 // Restart
 
 function restart(){
@@ -528,6 +518,9 @@ function restart(){
     startGame();
 
 }
+
+
+
 
 
 
@@ -557,6 +550,9 @@ function showMenu(){
 
 
 
+
+
+
 // Change Snake Skin
 
 function changeSkin(color){
@@ -580,6 +576,9 @@ color
 
 
 }
+
+
+
 
 
 
@@ -618,6 +617,10 @@ function shadeColor(color,percent){
     .slice(1);
 
 }
+
+
+
+
 
 
 
@@ -720,12 +723,10 @@ unlockedSkins.push(color);
 
 
 
-
 localStorage.setItem(
 "snakeCoins",
 coins
 );
-
 
 
 
@@ -764,41 +765,6 @@ alert(
 }
 </script>
 
-
-
-<script>
-// Service worker registration
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(reg => console.log('Service Worker registered', reg))
-    .catch(err => console.warn('SW registration failed', err));
-}
-
-// beforeinstallprompt handling (show custom install button)
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (installBtn) installBtn.style.display = 'inline-block';
-});
-
-if (installBtn) {
-  installBtn.addEventListener('click', async () => {
-    installBtn.style.display = 'none';
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log('User choice: ', outcome);
-    deferredPrompt = null;
-  });
-}
-
-window.addEventListener('appinstalled', () => {
-  console.log('PWA installed');
-});
-</script>
 
 </body>
 </html>
