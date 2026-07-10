@@ -33,12 +33,6 @@ border-radius:25px;
 box-shadow:
 0 0 30px #00e5ff;
 
-max-width: 95vw;
-
-overflow-y: auto;
-
-max-height: 95vh;
-
 }
 
 
@@ -49,20 +43,13 @@ color:#00e5ff;
 
 font-size:35px;
 
-margin: 10px 0;
-
 }
 
-h2{
-  font-size: 20px;
-  margin: 8px 0;
-}
+
 
 h3{
 
 color:#22c55e;
-
-margin: 15px 0 10px 0;
 
 }
 
@@ -86,10 +73,6 @@ cursor:pointer;
 
 transition:.3s;
 
-color: #000;
-
-font-weight: bold;
-
 }
 
 
@@ -100,9 +83,8 @@ transform:scale(1.1);
 
 }
 
-button:active{
-  transform: scale(0.95);
-}
+
+
 canvas {
     background: #020617;
     border: 3px solid #00e5ff;
@@ -119,85 +101,13 @@ canvas {
 
 
 
-
 .info{
 
 color:#ddd;
 
 margin-top:20px;
 
-font-size: 14px;
-
 }
-
 canvas{
     touch-action:none;
-}
-
-a{
-  color: #00e5ff;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-a:hover{
-  text-decoration: underline;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-  
-  #menu, #gameBox {
-    padding: 20px;
-    border-radius: 15px;
-  }
-  
-  h1 {
-    font-size: 28px;
-  }
-  
-  h2 {
-    font-size: 16px;
-  }
-  
-  h3 {
-    font-size: 14px;
-  }
-  
-  button {
-    padding: 10px 15px;
-    margin: 5px;
-    font-size: 14px;
-  }
-  
-  .info {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  #menu, #gameBox {
-    padding: 15px;
-  }
-  
-  h1 {
-    font-size: 24px;
-  }
-  
-  h2 {
-    font-size: 14px;
-  }
-  
-  button {
-    padding: 8px 12px;
-    margin: 4px;
-    font-size: 12px;
-  }
-  
-  .info {
-    font-size: 11px;
-  }
 }
